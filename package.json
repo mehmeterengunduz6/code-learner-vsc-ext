@@ -1,0 +1,66 @@
+{
+  "name": "code-learner",
+  "displayName": "Code Learner",
+  "description": "Notion-style annotations on AI-generated code blocks. Notes are written by your coding agent and rendered on hover.",
+  "version": "0.0.1",
+  "publisher": "code-learner",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Education",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeLearner.installRulePack",
+        "title": "Code Learner: Install Rule Pack"
+      },
+      {
+        "command": "codeLearner.openSidePanel",
+        "title": "Code Learner: Open Note"
+      },
+      {
+        "command": "codeLearner.rehearseChanges",
+        "title": "Code Learner: Rehearse Changes"
+      },
+      {
+        "command": "codeLearner.recomputeHashes",
+        "title": "Code Learner: Recompute Note Hashes"
+      }
+    ],
+    "configuration": {
+      "title": "Code Learner",
+      "properties": {
+        "codeLearner.codeLensEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show CodeLens above annotated blocks."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.config.js",
+    "watch": "node esbuild.config.js --watch",
+    "typecheck": "tsc --noEmit",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.90.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "markdown-it": "^14.2.0",
+    "zod": "^3.23.0"
+  }
+}

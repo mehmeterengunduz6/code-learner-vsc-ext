@@ -14,9 +14,9 @@ export class NoteDecorations implements vscode.Disposable {
     this.active = vscode.window.createTextEditorDecorationType({
       gutterIconPath: iconPath,
       gutterIconSize: "75%",
-      overviewRulerColor: "#7ec8e3",
+      overviewRulerColor: "#9cdcfe",
       overviewRulerLane: vscode.OverviewRulerLane.Right,
-      backgroundColor: "#7ec8e355",
+      backgroundColor: "#9cdcfe26",
       borderRadius: "2px",
       isWholeLine: false,
     });

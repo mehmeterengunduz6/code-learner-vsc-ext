@@ -1,9 +1,9 @@
 {
-  "name": "code-learner",
-  "displayName": "Code Learner",
+  "name": "knowyourcode",
+  "displayName": "Know Your Code",
   "description": "Notion-style annotations on AI-generated code blocks. Notes are written by your coding agent and rendered on hover.",
   "version": "0.0.1",
-  "publisher": "code-learner",
+  "publisher": "knowyourcode",
   "private": true,
   "engines": {
     "vscode": "^1.90.0"
@@ -20,23 +20,23 @@
     "commands": [
       {
         "command": "codeLearner.installRulePack",
-        "title": "Code Learner: Install Rule Pack"
+        "title": "Know Your Code: Install Rule Pack"
       },
       {
         "command": "codeLearner.openSidePanel",
-        "title": "Code Learner: Open Note"
+        "title": "Know Your Code: Open Note"
       },
       {
         "command": "codeLearner.rehearseChanges",
-        "title": "Code Learner: Rehearse Changes"
+        "title": "Know Your Code: Rehearse Changes"
       },
       {
         "command": "codeLearner.recomputeHashes",
-        "title": "Code Learner: Recompute Note Hashes"
+        "title": "Know Your Code: Recompute Note Hashes"
       }
     ],
     "configuration": {
-      "title": "Code Learner",
+      "title": "Know Your Code",
       "properties": {
         "codeLearner.codeLensEnabled": {
           "type": "boolean",

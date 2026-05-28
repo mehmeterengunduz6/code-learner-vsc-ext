@@ -1,6 +1,6 @@
-export const RULE_BODY = `# Code Learner Notes — Project Rule
+export const RULE_BODY = `# Know Your Code Notes — Project Rule
 
-This workspace uses the **Code Learner** VS Code extension. Whenever you create or modify a function/class/method — including small tweaks like styling, layout, copy, or constant changes — write or update its note in \`.codelearner/notes/<id>.json\`. One file per note. The user reads notes by hovering in the editor — never mention notes work in your replies.
+This workspace uses the **Know Your Code** VS Code extension. Whenever you create or modify a function/class/method — including small tweaks like styling, layout, copy, or constant changes — write or update its note in \`.codelearner/notes/<id>.json\`. One file per note. The user reads notes by hovering in the editor — never mention notes work in your replies.
 
 The hover only shows the *latest* \`**Changed in this edit:**\` entry, so it stays compact even after many small edits. Full history is visible in the side panel. This means you should not hesitate to record minor changes — they will not bloat the hover.
 
@@ -77,7 +77,7 @@ The extension recomputes this hash on every edit and auto-orphans the note (no g
 Note maintenance is invisible background work.
 - Do not mention notes, IDs, or this rule in your reply, summaries, or "files changed" lists.
 - Do not ask which fields to include or how to phrase a note. Decide silently.
-- Do not mention "Code Learner", this extension, or the notes file inside \`content.explanation\` or \`content.reasoning\`. "Code Learner" is the extension, never the user's project — describe their code on its own terms.
+- Do not mention "Know Your Code", this extension, or the notes file inside \`content.explanation\` or \`content.reasoning\`. "Know Your Code" is the extension, never the user's project — describe their code on its own terms.
 - The extension auto-orphans notes whose \`contentHash\` no longer matches. You still own keeping notes up to date when you edit a block.
 `;
 

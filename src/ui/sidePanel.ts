@@ -19,7 +19,7 @@ export class SidePanel {
     if (!SidePanel.panel) {
       SidePanel.panel = vscode.window.createWebviewPanel(
         "codeLearner.note",
-        "Code Learner",
+        "Know Your Code",
         { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
         { enableScripts: true, retainContextWhenHidden: true },
       );
@@ -57,7 +57,7 @@ export class SidePanel {
     if (!SidePanel.panel || !SidePanel.currentNoteId) return;
     const note = store.getById(SidePanel.currentNoteId);
     if (!note) {
-      SidePanel.panel.webview.html = wrap("This note no longer exists.", "Code Learner");
+      SidePanel.panel.webview.html = wrap("This note no longer exists.", "Know Your Code");
       return;
     }
     const explanation = md.render(note.content.explanation);

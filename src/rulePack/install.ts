@@ -1,7 +1,30 @@
 import * as vscode from "vscode";
-import { RULE_PACK_TARGETS, renderRulePack, type RulePackFlavor } from "./body";
+import { RULE_PACK_TARGETS, renderRulePack, type RulePackFlavor, type RulePackTarget } from "./body";
 
 const GITIGNORE_LINE = ".codelearner/";
+const BLOCK_BEGIN = "<!-- BEGIN Know Your Code rule pack -->";
+const BLOCK_END = "<!-- END Know Your Code rule pack -->";
+
+/** The rule pack wrapped in markers so it can be detected and updated in place. */
+function rulePackBlock(target: RulePackTarget): string {
+  return `${BLOCK_BEGIN}\n${renderRulePack(target)}\n${BLOCK_END}\n`;
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Replace an already-installed block in place, else null if none present. */
+function replaceExistingBlock(existing: string, block: string): string | null {
+  const pattern = new RegExp(`${escapeRegExp(BLOCK_BEGIN)}[\\s\\S]*?${escapeRegExp(BLOCK_END)}\\n?`);
+  if (!pattern.test(existing)) return null;
+  return existing.replace(pattern, block);
+}
+
+/** Append the block to the end of existing content, separated by a blank line. */
+function appendBlock(existing: string, block: string): string {
+  return `${existing.replace(/\s*$/, "")}\n\n${block}`;
+}
 
 export async function installRulePack(output: vscode.OutputChannel): Promise<void> {
   const folder = await pickWorkspaceFolder();
@@ -15,7 +38,7 @@ export async function installRulePack(output: vscode.OutputChannel): Promise<voi
     })),
     {
       canPickMany: true,
-      title: "Code Learner — Install Rule Pack",
+      title: "Know Your Code — Install Rule Pack",
       placeHolder: "Pick the agents you use in this workspace",
     },
   );
@@ -27,17 +50,37 @@ export async function installRulePack(output: vscode.OutputChannel): Promise<voi
   for (const pick of picks) {
     const target = RULE_PACK_TARGETS[pick.flavor as RulePackFlavor];
     const uri = vscode.Uri.joinPath(folder.uri, target.relativePath);
+    const block = rulePackBlock(target);
+    let contents = block;
 
     if (await fileExists(uri)) {
-      const overwrite = await vscode.window.showWarningMessage(
-        `${target.relativePath} already exists. Overwrite?`,
-        { modal: true },
-        "Overwrite",
-        "Skip",
-      );
-      if (overwrite !== "Overwrite") {
-        skipped.push(target.relativePath);
-        continue;
+      const existing = new TextDecoder().decode(await vscode.workspace.fs.readFile(uri));
+
+      // Already installed: update the marked section in place, no prompt.
+      const updated = replaceExistingBlock(existing, block);
+      if (updated !== null) {
+        if (updated === existing) {
+          skipped.push(`${target.relativePath} (already up to date)`);
+          continue;
+        }
+        contents = updated;
+      } else {
+        // Existing file with no rule pack yet: append or overwrite.
+        const choice = await vscode.window.showWarningMessage(
+          `${target.relativePath} already exists. Append the Know Your Code rule pack, or overwrite the file?`,
+          { modal: true },
+          "Append",
+          "Overwrite",
+          "Skip",
+        );
+        if (choice === "Append") {
+          contents = appendBlock(existing, block);
+        } else if (choice === "Overwrite") {
+          contents = block;
+        } else {
+          skipped.push(target.relativePath);
+          continue;
+        }
       }
     }
 
@@ -47,7 +90,7 @@ export async function installRulePack(output: vscode.OutputChannel): Promise<voi
     } catch {
       // ignore — parent may already exist
     }
-    await vscode.workspace.fs.writeFile(uri, new TextEncoder().encode(renderRulePack(target)));
+    await vscode.workspace.fs.writeFile(uri, new TextEncoder().encode(contents));
     written.push(target.relativePath);
     output.appendLine(`[rulePack] wrote ${uri.fsPath}`);
   }
@@ -56,9 +99,11 @@ export async function installRulePack(output: vscode.OutputChannel): Promise<voi
 
   if (written.length > 0) {
     vscode.window.showInformationMessage(
-      `Code Learner rule pack installed: ${written.join(", ")}` +
+      `Know Your Code rule pack installed: ${written.join(", ")}` +
         (skipped.length ? ` (skipped ${skipped.join(", ")})` : ""),
     );
+  } else if (skipped.length > 0) {
+    vscode.window.showInformationMessage(`Know Your Code rule pack: skipped ${skipped.join(", ")}`);
   }
 }
 

@@ -7,9 +7,9 @@ import { NoteDecorations } from "./ui/decorations";
 import { RehearsePanel } from "./ui/rehearsePanel";
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
-  const output = vscode.window.createOutputChannel("Code Learner");
+  const output = vscode.window.createOutputChannel("Know Your Code");
   context.subscriptions.push(output);
-  output.appendLine("Code Learner activated.");
+  output.appendLine("Know Your Code activated.");
 
   const noteStore = new NoteStore(output);
   context.subscriptions.push(noteStore);
@@ -38,7 +38,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     }),
     vscode.commands.registerCommand("codeLearner.recomputeHashes", async () => {
       const report = await noteStore.recomputeHashes();
-      const msg = `Code Learner: ${report.updated} updated, ${report.unchanged} unchanged, ${report.missing} missing, ${report.skipped} skipped.`;
+      const msg = `Know Your Code: ${report.updated} updated, ${report.unchanged} unchanged, ${report.missing} missing, ${report.skipped} skipped.`;
       output.appendLine(`[recompute] ${msg}`);
       for (const line of report.details) output.appendLine(`  ${line}`);
       vscode.window.showInformationMessage(msg);

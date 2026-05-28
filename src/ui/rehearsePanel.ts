@@ -45,7 +45,7 @@ export class RehearsePanel {
     if (!RehearsePanel.panel) {
       RehearsePanel.panel = vscode.window.createWebviewPanel(
         "codeLearner.rehearse",
-        "Code Learner — Rehearse",
+        "Know Your Code — Rehearse",
         { viewColumn: vscode.ViewColumn.Beside, preserveFocus: false },
         { enableScripts: true, retainContextWhenHidden: true },
       );
